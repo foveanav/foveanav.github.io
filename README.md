@@ -1,9 +1,10 @@
-# FoveaNav project website — GitHub Pages package
+# FoveaNav project website
 
-This folder is prepared for a GitHub Pages website that anyone with its link can
-open. It includes the static website, the paper PDF, and edited demonstration
-videos. Author and affiliation fields remain empty. The package itself does not
-create a repository or publish anything.
+This repository hosts the FoveaNav project website, including the paper PDF and
+edited demonstration videos. Author and affiliation fields remain empty.
+
+- Website: <https://ggalggeum.github.io/FoveaNav/>
+- Repository: <https://github.com/ggalggeum/FoveaNav>
 
 ## Access and indexing
 
@@ -29,24 +30,23 @@ python3 -m http.server 8000 --bind 127.0.0.1 --directory dist
 Open <http://127.0.0.1:8000>. Stop with Ctrl+C. No build or package installation
 is required.
 
-## Publish
+## Update the published site
 
-1. Create a dedicated website repository when ready. Add this folder's contents
-   at the repository root, including the hidden `.github` directory. Use Git to
-   upload the complete package; do not upload the outer ZIP as a single file.
-2. Put `.github/workflows/pages.yml` on the default branch, normally `main`.
-3. In **Settings → Pages → Build and deployment → Source**, select
-   **GitHub Actions**.
-4. In **Actions → Publish FoveaNav to GitHub Pages → Run workflow**, select the
-   default branch and run it. This is the publication step.
-5. Open the URL reported by the deployment. Future updates require another
-   manual workflow run after the updated files have been committed.
+1. Edit the files in `dist/`, preview locally, then commit and push the changes
+   to `main`. Keep the `noindex, nofollow` meta tag in `dist/index.html`.
+2. Open [Actions → Publish FoveaNav to GitHub Pages](https://github.com/ggalggeum/FoveaNav/actions/workflows/pages.yml),
+   choose **Run workflow**, select `main`, and run it.
+3. Wait for the deployment to succeed, then check the website. Pushing changes
+   alone does not update the published site.
+
+**Settings → Pages → Build and deployment → Source** is configured as
+**GitHub Actions**. Only `dist/` is included in the deployed website.
 
 All media links are relative, so project URLs with a repository subpath work.
 The workflow obtains the site's actual `base_url` from
 [`actions/configure-pages`](https://github.com/actions/configure-pages/blob/v5/action.yml)
-and fills the canonical and social-sharing URLs automatically. No username,
-domain, private-hosting URL, or hosting identifier is embedded in this package.
+and fills the canonical and social-sharing URLs automatically. Private-hosting
+URLs and hosting identifiers are not included.
 
 ## Files to edit
 
