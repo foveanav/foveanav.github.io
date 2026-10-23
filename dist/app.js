@@ -27,7 +27,7 @@ videos.forEach((video) => {
 });
 function cancelSeek(video) {
   const seek = pendingSeeks.get(video);
-  if (seek) video.removeEventListener('loadedmetadata', seek);
+  if (seek) video.removeEventListener('canplay', seek);
   pendingSeeks.delete(video);
 }
 function pausePreviewAutomatically() {
@@ -38,6 +38,7 @@ function pausePreviewAutomatically() {
 
 videos.forEach((active) => active.addEventListener('play', () => {
   if (active.paused) return; // A stopped clip may still have a queued play event.
+  cancelSeek(active);
   videos.forEach((other) => { if (other !== active) { cancelSeek(other); other.pause(); } });
   if (active !== hero) autoPreview = false;
 }));
@@ -69,7 +70,7 @@ document.addEventListener('visibilitychange', () => {
 const mediaObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach((entry) => {
     if (!entry.isIntersecting) return;
-    entry.target.preload = 'metadata';
+    if (entry.target.preload === 'none') entry.target.preload = 'metadata';
     observer.unobserve(entry.target);
   });
 }, {rootMargin: '250px'});
@@ -92,18 +93,20 @@ viewButtons.forEach((button) => button.addEventListener('click', () => {
 }));
 document.querySelectorAll('[data-seek-player]').forEach((button) => button.addEventListener('click', () => {
   const video = byId(button.dataset.seekPlayer);
-  videos.forEach((other) => { cancelSeek(other); if (other !== video) other.pause(); });
+  videos.forEach((other) => { cancelSeek(other); other.pause(); });
   autoPreview = false;
+  // Load a decoded frame even on the first click, while remaining paused.
+  video.preload = 'auto';
   const seek = () => {
     cancelSeek(video);
+    video.pause();
     video.currentTime = Math.max(0, Math.min(Number(button.dataset.time), video.duration - 0.05));
-    video.play().catch(() => {});
   };
-  if (video.readyState >= 1) seek();
+  if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) seek();
   else {
     pendingSeeks.set(video, seek);
-    video.addEventListener('loadedmetadata', seek, {once: true});
-    video.load();
+    video.addEventListener('canplay', seek, {once: true});
+    if (video.readyState === HTMLMediaElement.HAVE_NOTHING && video.networkState !== HTMLMediaElement.NETWORK_LOADING) video.load();
   }
   video.scrollIntoView({block: 'center', behavior: reducedMotion.matches ? 'instant' : 'smooth'});
 }));

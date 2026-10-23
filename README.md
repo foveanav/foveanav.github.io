@@ -31,6 +31,10 @@ python3 -m http.server 8000 --bind 127.0.0.1 --directory dist
 Open <http://127.0.0.1:8000>. Stop with Ctrl+C. No build or package installation
 is required.
 
+To check timestamp buttons with real video decoding, run
+`node scripts/check-moments.cjs` (Node 22+ and Google Chrome required).
+This checks cold loads, rapid clicks, camera changes, and paused frames.
+
 ## Update the published site
 
 1. Edit the files in `dist/`, preview locally, then commit and push the changes
