@@ -3,8 +3,8 @@
 This repository hosts the FoveaNav project website, including the paper PDF and
 edited demonstration videos. Author and affiliation fields remain empty.
 
-- Website: <https://ggalggeum.github.io/FoveaNav/>
-- Repository: <https://github.com/ggalggeum/FoveaNav>
+- Website: <https://foveanav.github.io/>
+- Repository: <https://github.com/foveanav/foveanav.github.io>
 
 ## Access and indexing
 
@@ -34,7 +34,7 @@ is required.
 
 1. Edit the files in `dist/`, preview locally, then commit and push the changes
    to `main`. Keep the `noindex, nofollow` meta tag in `dist/index.html`.
-2. Open [Actions → Publish FoveaNav to GitHub Pages](https://github.com/ggalggeum/FoveaNav/actions/workflows/pages.yml),
+2. Open [Actions → Publish FoveaNav to GitHub Pages](https://github.com/foveanav/foveanav.github.io/actions/workflows/pages.yml),
    choose **Run workflow**, select `main`, and run it.
 3. Wait for the deployment to succeed, then check the website. Pushing changes
    alone does not update the published site.
