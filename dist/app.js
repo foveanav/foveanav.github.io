@@ -121,6 +121,7 @@ function openModal(modal, opener) {
   return true;
 }
 document.querySelectorAll('[data-open-overview]').forEach((link) => link.addEventListener('click', (event) => {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
   if (!openModal(dialog, link)) return;
   const source = overview.querySelector('source');
@@ -130,6 +131,7 @@ document.querySelectorAll('[data-open-overview]').forEach((link) => link.addEven
 byId('close-overview').addEventListener('click', () => dialog.close());
 dialog.addEventListener('close', () => overview.pause());
 document.querySelectorAll('[data-open-figure]').forEach((link) => link.addEventListener('click', (event) => {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
   if (!openModal(figureDialog, link)) return;
   byId('figure-title').textContent = link.dataset.figureTitle;

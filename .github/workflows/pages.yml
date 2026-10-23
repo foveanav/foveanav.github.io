@@ -1,7 +1,13 @@
 name: Publish FoveaNav to GitHub Pages
 
-# Publishing is an explicit action. Uploading or pushing files does not deploy.
+# Publish website changes on main; manual deployment remains available.
 on:
+  push:
+    branches: [main]
+    paths:
+      - "dist/**"
+      - "scripts/set-pages-url.py"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:

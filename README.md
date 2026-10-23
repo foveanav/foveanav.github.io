@@ -15,9 +15,10 @@ its assets. A private GitHub repository does **not** normally make its Pages
 website private. GitHub documents the distinction in
 [its Pages setup guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
-The supplied workflow runs **only when manually requested**. It has no push or
-pull-request trigger. Keep the indexing request until wider release is intended;
-then remove the robots meta tag from `dist/index.html` and deploy the update.
+Website changes pushed to `main` deploy automatically. The workflow also
+supports manual deployment; README-only changes do not trigger it. Keep the
+indexing request until wider release is intended; then remove the robots meta
+tag from `dist/index.html` and deploy the update.
 
 ## Preview locally
 
@@ -34,10 +35,9 @@ is required.
 
 1. Edit the files in `dist/`, preview locally, then commit and push the changes
    to `main`. Keep the `noindex, nofollow` meta tag in `dist/index.html`.
-2. Open [Actions → Publish FoveaNav to GitHub Pages](https://github.com/foveanav/foveanav.github.io/actions/workflows/pages.yml),
-   choose **Run workflow**, select `main`, and run it.
-3. Wait for the deployment to succeed, then check the website. Pushing changes
-   alone does not update the published site.
+2. Track the automatic deployment in [Actions → Publish FoveaNav to GitHub Pages](https://github.com/foveanav/foveanav.github.io/actions/workflows/pages.yml),
+   or choose **Run workflow** on `main` to deploy manually.
+3. Wait for the deployment to succeed, then check the website.
 
 **Settings → Pages → Build and deployment → Source** is configured as
 **GitHub Actions**. Only `dist/` is included in the deployed website.
