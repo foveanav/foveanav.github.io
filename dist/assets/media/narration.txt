@@ -1,0 +1,43 @@
+FoveaNav learns task-relevant gaze for robust visual navigation.
+The Fovea policy selects where to look.
+The selected gaze becomes a Gaussian gaze map.
+The navigation transformer uses this map to predict a future trajectory from the full image.
+The navigation transformer is trained with BC, while the Fovea policy is trained with RL using a reward based on trajectory prediction error.
+
+We evaluate FoveaNav with closed-loop real-robot deployment across five navigation tasks.
+The first task is red bag following.
+The robot follows a person carrying a red bag.
+We compare our method with a full-image behavior cloning baseline.
+In the in-distribution setting, both methods predict similar trajectories.
+However, FoveaNav shifts its gaze to track the task-relevant target.
+The attention and occlusion sensitivity maps also show more concentrated responses around the red bag.
+In the OOD setting, we add red distractors that can be confused with the target.
+Our method checks nearby obstacles, then refocuses on the red bag to keep following the target.
+In the OOD setting, BC achieves a success rate of twenty percent, compared with ninety percent for ours.
+The BC baseline fails to identify the red bag among distractors and ends in a collision.
+BC also fails under other visual changes outside the training distribution, such as background changes, while ours remains robust.
+
+In obstacle avoidance, the robot must avoid obstacles while staying on the track.
+In the in-distribution setting, where obstacle types match those in the training data, both FoveaNav and BC successfully complete the track.
+The OOD setting introduces unseen obstacle types and changes in obstacle placement.
+Here, the two models again differ in performance.
+Our method directs its gaze toward obstacle boundaries and free space.
+With this gaze, the attention and occlusion sensitivity maps show concentrated responses around the obstacles.
+BC often fails to avoid unseen obstacles.
+In the OOD setting, ours achieves a success rate of ninety percent, compared with zero percent for BC.
+
+In sign-guided navigation, the robot follows arrow signs at junctions and stops at the goal sign.
+FoveaNav moves its gaze toward the arrow when making a turn.
+With changed sign locations and background appearance, BC often predicts the wrong direction.
+Our method focuses on the arrow cue and makes the correct turn.
+In the OOD setting for this task, ours achieves a success rate of ninety-six percent, compared with thirty-eight percent for BC.
+
+In screen-cue navigation, the robot uses a screen instruction to choose the target box.
+FoveaNav moves its gaze between the screen and the boxes, using task-dependent visual cues.
+We evaluate this task under in-distribution conditions. The success rates are about eighty percent for ours and thirty percent for BC.
+
+In forest following, the robot follows a person outdoors.
+When a distractor appears, FoveaNav stays focused on the target, while BC turns toward the distractor.
+Under OOD conditions, BC fails every trial, while ours succeeds every time.
+Across five navigation tasks, FoveaNav maintains in-distribution performance and improves robustness to OOD visual changes.
+Learning where to look provides a useful inductive bias for robust visual navigation.
