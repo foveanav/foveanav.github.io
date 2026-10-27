@@ -177,7 +177,7 @@ project.tasks.forEach((task) => {
     const label = document.createElement('div');
     label.className = 'chart-label';
     const title = document.createElement('strong'); title.textContent = task.short;
-    const note = document.createElement('span'); note.textContent = `n = ${task.n}`;
+    const note = document.createElement('span'); note.textContent = `${task.n} trials each`;
     label.append(title, note); row.append(label);
     const bars = document.createElement('div'); bars.className = 'chart-bars';
     bars.setAttribute('role', 'img');
