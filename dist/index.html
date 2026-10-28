@@ -27,10 +27,11 @@
       <div class="hero-intro">
         <p class="project-name">FoveaNav</p>
         <h1 id="project-title">Learning Task-Relevant Gaze<br class="desktop-break"> for Robust Visual Navigation</h1>
-        <p class="hero-detail">FoveaNav learns where to focus within a camera image. It gives more weight to the selected region while using the full image to predict the robot’s path.</p>
+        <p class="hero-detail">A gaze policy trained with reinforcement learning selects where to focus in the camera image. A navigation model trained from expert demonstrations uses gaze to reweight attention over full-image features and predict the robot’s path.</p>
         <div class="resource-links" id="resource-links">
           <a class="button button-dark" href="assets/paper/FoveaNav.pdf">Paper (PDF)</a>
           <a class="button button-light" href="assets/media/overview.mp4" data-open-overview>Video <span class="button-note">3 min</span></a>
+          <a class="button button-light" href="#method">How it works</a>
         </div>
       </div>
       <div id="authors" class="authors" hidden></div><div id="affiliations" class="affiliations" hidden></div>
@@ -81,6 +82,7 @@
             <video id="forest-video" controls muted playsinline preload="none" width="1280" height="548" poster="assets/posters/forest-robot.webp" aria-label="Forest comparison: FoveaNav retains the original target; BC turns toward the distractor"><source src="assets/media/forest-robot.mp4" type="video/mp4"><a href="assets/media/forest-robot.mp4">Watch the Forest demo.</a></video>
             <div class="moment-links" aria-label="Forest video moments"><span>Pause at:</span><button type="button" data-seek-player="forest-video" data-time="0">Target person <span>0:00</span></button><button type="button" data-seek-player="forest-video" data-time="4.8">Second person enters <span>0:05</span></button><button type="button" data-seek-player="forest-video" data-time="8.5">Robots diverge <span>0:09</span></button></div>
           </div>
+          <p class="video-key">Robot and external views are separate clips. Switching views restarts playback; timestamps refer to the selected clip.</p>
 
           <details class="inspect"><summary>Show attention and occlusion maps</summary><div class="map-detail"><div><h4>What the maps show</h4><p>Attention shows how the navigation model weights image regions. Occlusion sensitivity shows how much the predicted path changes when part of the image is hidden.</p><p class="small-note">FoveaNav snapshot at 0:07 in the robot-view clip. These maps are distinct from Gaussian gaze.</p></div><figure><a href="assets/details/forest-attention.webp" data-open-figure data-figure-title="Forest · Attention" aria-label="Enlarge Forest · Attention"><img src="assets/details/forest-attention.webp" alt="FoveaNav attention snapshot in the Forest trial" width="424" height="312" loading="lazy"></a><figcaption>Attention</figcaption></figure><figure><a href="assets/details/forest-occlusion.webp" data-open-figure data-figure-title="Forest · Occlusion sensitivity" aria-label="Enlarge Forest · Occlusion sensitivity"><img src="assets/details/forest-occlusion.webp" alt="FoveaNav occlusion-sensitivity snapshot in the same Forest frame" width="424" height="312" loading="lazy"></a><figcaption>Occlusion sensitivity</figcaption></figure></div></details>
         </article>
@@ -123,14 +125,24 @@
     </section>
 
     <section class="section wrap" id="method" aria-labelledby="method-title">
-      <div class="section-heading"><h2 id="method-title">How FoveaNav works</h2><p>Gaze is a location selected within the camera image. A Gaussian map gives nearby image features more weight when predicting the robot’s trajectory.</p></div>
+      <div class="section-heading"><h2 id="method-title">How FoveaNav works</h2><p>At inference, gaze selects a location in the camera image. A Gaussian map reweights the navigation transformer’s cross-attention to emphasize features near that point, while features from the rest of the image remain available.</p></div>
       <ol class="method-steps">
         <li><h3>Select a gaze location</h3><p>A learned policy chooses a point in the image using visual features and recent gaze history.</p></li>
-        <li><h3>Weight the image features</h3><p>A Gaussian map emphasizes the area around that point. Features from the rest of the image remain available.</p></li>
-        <li><h3>Predict the robot’s path</h3><p>The navigation transformer uses the weighted features to predict a future trajectory.</p></li>
+        <li><h3>Reweight visual attention</h3><p>A Gaussian map emphasizes features near that point in the navigation transformer’s cross-attention. The full image remains available.</p></li>
+        <li><h3>Predict the robot’s path</h3><p>The navigation transformer uses the reweighted cross-attention to predict a future trajectory.</p></li>
       </ol>
       <figure class="method-figure"><a href="assets/figures/fig2_foveanav.webp" data-open-figure data-figure-title="FoveaNav architecture" aria-label="Enlarge the architecture diagram"><img src="assets/figures/fig2_foveanav.webp" alt="The frozen DINO encoder supplies full-image tokens. The fovea policy selects gaze using visual features and crop history. Gaussian gaze reweights the navigation transformer's cross-attention. BC and RL train navigation and gaze respectively." width="2000" height="794" loading="lazy"></a><figcaption>Click the diagram to enlarge.</figcaption></figure>
-      <p class="method-note">The trajectory predictor learns to imitate expert demonstrations. The gaze policy is trained with reinforcement learning to reduce trajectory prediction error. No human gaze annotations are used.</p>
+      <section class="method-note" aria-labelledby="training-title">
+        <h3 id="training-title">How the components are trained</h3>
+        <div class="table-scroll"><table>
+          <thead><tr><th scope="col">Component</th><th scope="col">Role</th><th scope="col">Training</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Gaze policy</th><td>Select a gaze location</td><td>PPO using trajectory prediction error on recorded expert trajectories</td></tr>
+            <tr><th scope="row">Navigation model</th><td>Predict a trajectory using gaze-weighted cross-attention</td><td>Behavior cloning from expert demonstrations</td></tr>
+          </tbody>
+        </table></div>
+        <p>Training begins with full-image behavior cloning, then alternates PPO updates to the gaze policy with behavior-cloning updates to the navigation model. No human gaze annotations are used. Each task uses a separately trained model.</p>
+      </section>
       <div class="ablation"><div><h3>Full-image gaze weighting vs. a crop</h3><p>For red-bag following with obstacles, we compare Gaussian weighting over the full image with a gaze-centered crop. Both variants use an RL-trained gaze policy.</p><p class="small-note">Successful trials out of 10 attempts per variant (paper Table II). This is a separate ablation experiment.</p></div><div class="ablation-scores"><div><span>RL + Gaussian gaze <b class="ours">10 / 10</b></span><div class="trial-dots ours" aria-label="10 successful trials out of 10"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div><span>RL + hard crop <b>1 / 10</b></span><div class="trial-dots baseline" aria-label="1 successful trial out of 10"><i></i><i class="empty"></i><i class="empty"></i><i class="empty"></i><i class="empty"></i><i class="empty"></i><i class="empty"></i><i class="empty"></i><i class="empty"></i><i class="empty"></i></div></div></div></div>
     </section>
 
