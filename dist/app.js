@@ -42,16 +42,9 @@ videos.forEach((active) => active.addEventListener('play', () => {
   videos.forEach((other) => { if (other !== active) { cancelSeek(other); other.pause(); } });
   if (active !== hero) autoPreview = false;
 }));
-const updatePreviewButton = () => { byId('teaser-toggle').textContent = hero.paused ? 'Play preview' : 'Pause preview'; };
-hero.addEventListener('play', updatePreviewButton);
 hero.addEventListener('pause', () => {
   if (automaticHeroPauses) automaticHeroPauses -= 1;
   else autoPreview = false; // Native controls must also disable automatic restart.
-  updatePreviewButton();
-});
-byId('teaser-toggle').addEventListener('click', () => {
-  autoPreview = false;
-  if (hero.paused) hero.play().catch(() => {}); else hero.pause();
 });
 // Only the muted introduction may auto-play; respect motion and data preferences.
 new IntersectionObserver(([entry]) => {
@@ -242,12 +235,20 @@ if (project.affiliations.length) {
   byId("affiliations").hidden = false;
 }
 Object.entries(project.links).forEach(([name, url]) => {
-  if (!url) return;
+  if (typeof url !== "string" || !url.trim()) return;
+  let destination;
+  try { destination = new URL(url, document.baseURI); } catch { return; }
+  if (!["http:", "https:"].includes(destination.protocol)) return;
+  const placeholder = (name === "model" || name === "code")
+    ? document.querySelector(`[data-resource="${name}"]`)
+    : null;
+  if (!placeholder && name !== "arxiv") return;
   const link = document.createElement("a");
   link.className = "button button-light";
-  link.href = url;
-  link.textContent = name === "arxiv" ? "arXiv" : "Code";
-  byId("resource-links").append(link);
+  link.href = destination.href;
+  link.textContent = placeholder ? placeholder.textContent : "arXiv";
+  if (placeholder) placeholder.replaceWith(link);
+  else byId("resource-links").append(link);
 });
 if (project.citation) {
   byId("citation-text").textContent = project.citation;

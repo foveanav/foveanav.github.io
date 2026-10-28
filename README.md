@@ -59,7 +59,7 @@ URLs and hosting identifiers are not included.
 | `dist/index.html` | Page structure and text |
 | `dist/styles.css` | Layout and visual style |
 | `dist/app.js` | Playback controls and interactions |
-| `dist/site-data.js` | Results and future author, affiliation, code, and arXiv links |
+| `dist/site-data.js` | Results and future author, affiliation, model, code, and arXiv links |
 | `dist/assets/` | Paper, videos, posters, figures, and transcript |
 | `.github/workflows/pages.yml` | Manual deployment workflow |
 | `scripts/set-pages-url.py` | Deployment-specific canonical and sharing URLs |
@@ -67,3 +67,6 @@ URLs and hosting identifiers are not included.
 The original research code, training data, model checkpoints, raw recordings,
 private hosting configuration, and edit-provenance files are not part of this
 website package.
+
+To activate the Model or Code button, set `links.model` or `links.code` in
+`dist/site-data.js` to the final URL. Empty values keep the buttons disabled.

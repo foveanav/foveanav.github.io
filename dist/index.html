@@ -31,6 +31,8 @@
         <div class="resource-links" id="resource-links">
           <a class="button button-dark" href="assets/paper/FoveaNav.pdf">Paper (PDF)</a>
           <a class="button button-light" href="assets/media/overview.mp4" data-open-overview>Video <span class="button-note">3 min</span></a>
+          <button class="button button-light resource-placeholder" type="button" data-resource="model" disabled aria-label="Model (link coming soon)">Model</button>
+          <button class="button button-light resource-placeholder" type="button" data-resource="code" disabled aria-label="Code (link coming soon)">Code</button>
           <a class="button button-light" href="#method">How it works</a>
         </div>
       </div>
@@ -40,7 +42,7 @@
           <source src="assets/media/teaser.mp4" type="video/mp4">
           <a href="assets/media/teaser.mp4">Watch the short introduction.</a>
         </video>
-        <figcaption><span><strong>Left: FoveaNav. Right: behavior cloning (BC).</strong> BC imitates expert trajectories from the full image. Warm colors show gaze; curves show predicted paths. Separate trials are shown.</span><button id="teaser-toggle" type="button" aria-controls="teaser-video">Play preview</button></figcaption>
+        <figcaption><span><strong>Left: FoveaNav. Right: behavior cloning (BC).</strong> BC imitates expert trajectories from the full image. Warm colors show gaze; curves show predicted paths. Separate trials are shown.</span></figcaption>
       </figure>
       <p class="evaluation-note"><strong>850 real-robot trials across five tasks.</strong> 425 trials per method. <a href="#results">See the results</a>.</p>
       <nav class="task-index" aria-label="Explore all five tasks">
@@ -84,7 +86,7 @@
           </div>
           <p class="video-key">Robot and external views are separate clips. Switching views restarts playback; timestamps refer to the selected clip.</p>
 
-          <details class="inspect"><summary>Show attention and occlusion maps</summary><div class="map-detail"><div><h4>What the maps show</h4><p>Attention shows how the navigation model weights image regions. Occlusion sensitivity shows how much the predicted path changes when part of the image is hidden.</p><p class="small-note">FoveaNav snapshot at 0:07 in the robot-view clip. These maps are distinct from Gaussian gaze.</p></div><figure><a href="assets/details/forest-attention.webp" data-open-figure data-figure-title="Forest · Attention" aria-label="Enlarge Forest · Attention"><img src="assets/details/forest-attention.webp" alt="FoveaNav attention snapshot in the Forest trial" width="424" height="312" loading="lazy"></a><figcaption>Attention</figcaption></figure><figure><a href="assets/details/forest-occlusion.webp" data-open-figure data-figure-title="Forest · Occlusion sensitivity" aria-label="Enlarge Forest · Occlusion sensitivity"><img src="assets/details/forest-occlusion.webp" alt="FoveaNav occlusion-sensitivity snapshot in the same Forest frame" width="424" height="312" loading="lazy"></a><figcaption>Occlusion sensitivity</figcaption></figure></div></details>
+          <details class="inspect"><summary>Show attention and occlusion maps</summary><div class="map-detail"><div><h4>What the maps show</h4><p><strong>Gaze:</strong> the policy selects a location represented by a smoothed Gaussian map that reweights cross-attention.</p><p><strong>Attention:</strong> the model’s weights over image regions. High attention alone does not establish causal importance.</p><p><strong>Occlusion sensitivity:</strong> how much the predicted trajectory changes when an image patch is masked. This measures prediction sensitivity.</p><p class="small-note">Attention and occlusion snapshots show FoveaNav at 0:07 in the robot-view clip.</p></div><figure><a href="assets/details/forest-attention.webp" data-open-figure data-figure-title="Forest · Attention" aria-label="Enlarge Forest · Attention"><img src="assets/details/forest-attention.webp" alt="FoveaNav attention snapshot in the Forest trial" width="424" height="312" loading="lazy"></a><figcaption>Attention</figcaption></figure><figure><a href="assets/details/forest-occlusion.webp" data-open-figure data-figure-title="Forest · Occlusion sensitivity" aria-label="Enlarge Forest · Occlusion sensitivity"><img src="assets/details/forest-occlusion.webp" alt="FoveaNav occlusion-sensitivity snapshot in the same Forest frame" width="424" height="312" loading="lazy"></a><figcaption>Occlusion sensitivity</figcaption></figure></div></details>
         </article>
 
         <article class="story" id="redbag" aria-labelledby="redbag-title">

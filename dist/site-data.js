@@ -2,7 +2,8 @@
 window.FOVEANAV = {
   authors: [], // Example: { name: "Author Name", url: "https://...", affiliations: [1] }
   affiliations: [], // Example: "Department, University"
-  links: { arxiv: "", code: "" },
+  // Set model or code to a confirmed URL to replace the disabled button with a link.
+  links: { arxiv: "", model: "", code: "" },
   citation: "", // Add BibTeX after authors and public publication metadata are final.
   tasks: [
     { id: "redbag", title: "Red-Bag Following", short: "Red bag", setting: "OOD", condition: "red distractors", goal: "follow the red-bag target", description: "Follow the red bag despite red distractors.", n: 30, ours: 90, bc: 20, successes: { ours: 27, bc: 6 }, idResult: [10, 100, 100] },
