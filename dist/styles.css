@@ -72,9 +72,21 @@ body{font-family:Arial,Helvetica,sans-serif;line-height:1.7}
 .method-note{text-align:left;font-size:15px;max-width:800px;line-height:1.7}.ablation{border-top:1px solid var(--line);background:white;border-radius:0;padding:28px 0 0}.ablation p:not(.small-note){color:var(--ink);font-size:15px}
 .analysis-copy>p:not(.small-note){font-size:16px;color:var(--ink)}.analysis-copy h2{font-size:28px}
 .footer{background:white}.footer-content p{font-size:13px}
+.chart-row{row-gap:4px}.chart-condition{grid-column:1 / -1;margin:2px 0 0;font-size:13px;line-height:1.5;color:var(--muted)}
+.trial-breakdown{margin:4px 0 12px;color:var(--ink)}
+.method-note h3{font-size:18px;color:var(--ink);margin-bottom:12px}.method-note table{text-align:left;font-size:14px}.method-note th,.method-note td{white-space:normal;text-align:left;vertical-align:top}.method-note p{margin-top:12px}
+.resource-placeholder:disabled{background:#f2f4f5;border-color:var(--line);color:#59636b;cursor:not-allowed;opacity:1}
 @media(max-width:760px){
 .wrap{width:calc(100% - 36px)}.hero{padding-top:28px}.project-name{font-size:38px}.hero h1{font-size:25px}.hero-detail{font-size:16px;margin-top:18px}.hero .resource-links{margin-top:18px}.hero .button{font-size:14px}
 .hero-media figcaption{font-size:13px;gap:12px}.hero-media figcaption>span{flex-basis:100%}.evaluation-note{font-size:14px;text-align:left}.task-index{justify-content:flex-start;gap:0 18px}.task-index a{font-size:14px}
 .section{padding:34px 0}.section-heading{margin-bottom:22px}h2,#results .section-heading h2,.field-heading h2{font-size:26px}.section-heading>p:last-child,#results .section-heading>p:last-child{font-size:15px}.story-heading h3{font-size:23px}.story-heading>p{font-size:15px}
 .field-heading>p{font-size:15px}.field-film figcaption{font-size:13px}.id-results{padding:20px 0 0;border-left:0;border-top:1px solid var(--line)}.more-grid{gap:30px}.card-heading{padding:0 0 14px}.method-steps{gap:16px}.method-steps h3{font-size:17px}.method-steps p{font-size:15px}.method-note{font-size:14px}.analysis-copy>p:not(.small-note){font-size:15px}
+/* Let narrow grid children shrink instead of forcing the whole page wider. */
+.results-grid{grid-template-columns:minmax(0,1fr)}.results-grid>*,.chart-row>*,.gaze-sequence>*{min-width:0}
+.chart-row{grid-template-columns:82px minmax(0,1fr)}.gaze-sequence{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:480px){
+.gaze-sequence{grid-template-columns:minmax(0,1fr);gap:12px}
+.gaze-sequence button>span{display:flex;align-items:center;padding:10px 12px}
+.gaze-sequence small{display:inline;margin:0 0 0 auto}
 }
